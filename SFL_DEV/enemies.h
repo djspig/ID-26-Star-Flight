@@ -1,8 +1,8 @@
-#ifndef ENEMYSHIPS_H
-#define ENEMYSHIPS_H
+#ifndef ENEMIES_H
+#define ENEMIES_H
 
 #include "Arglib.h"
-#include "bitmaps.h"
+#include "globals.h"
 
 #define ENEMY_ONE           0
 #define ENEMY_TWO           1
@@ -21,8 +21,6 @@
 #define ENEMY_FIFTEEN       14
 #define ENEMY_SIXTEEN       15
 
-
-extern Arduboy arduboy;
 
 byte currentEnemy;
 

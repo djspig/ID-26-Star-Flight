@@ -2,22 +2,16 @@
 #define STAGE_H
 
 #include "Arglib.h"
-#include "enemyships.h"
+#include "globals.h"
+#include "enemies.h"
 #include "boss.h"
 
-#define LEVEL_ONE       1
-#define LEVEL_TWO       2
 
-byte life;
-byte level;
-boolean atEndOfLevel;
-unsigned long scorePlayer;
 byte groupOfThree;
 
 byte stillStar[11][2] = {{84, 9}, {67, 14}, {109, 19}, {27, 24}, {9, 29}, {96, 34}, {31, 39}, {45, 44}, {82, 49}, {19, 54}, {57, 59}};
 byte movingStar[11][2] = {{16, 5}, {125, 10}, {62, 15}, {79, 20}, {115, 25}, {104, 30}, {16, 35}, {117, 40}, {65, 45}, {98, 50}, {23, 55}};
 byte fastMovingStar[11][2] = {{84, 7}, {67, 12}, {109, 17}, {27, 22}, {9, 27}, {96, 32}, {31, 37}, {45, 42}, {82, 47}, {19, 52}, {57, 57}};
-byte levelProgress;
 boolean makeProgress = false;
 
 const byte PROGMEM levelOne[] =

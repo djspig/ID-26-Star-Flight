@@ -1,18 +1,11 @@
-#ifndef SPACESHIPS_H
-#define SPACESHIPS_H
-
-#define STATE_GAME_PAUSE         9
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #define WEAPON_CANON             0
 #define WEAPON_WAVE              1
 #define WEAPON_ROCKETS           2
 
 #include "Arglib.h"
-#include "bitmaps.h"
-
-extern Arduboy arduboy;
-extern SimpleButtons buttons;
-extern unsigned char gameState;
 
 byte currentBullet;
 byte currentWeapon;

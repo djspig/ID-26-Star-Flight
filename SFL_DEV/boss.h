@@ -2,7 +2,7 @@
 #define BOSS_H
 
 #include "Arglib.h"
-#include "bitmaps.h"
+#include "globals.h"
 
 #define BOSS_ONE           0
 #define BOSS_TWO           1
@@ -11,8 +11,6 @@
 #define BOSS_FIVE          4
 #define BOSS_SIX           5
 
-
-extern Arduboy arduboy;
 
 struct Boss
 {
