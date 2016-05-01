@@ -17,6 +17,16 @@ void stateMenuMain()
   // show the splash art
   arduboy.drawBitmap(0, 16, titleScreenSFL, 128, 48, WHITE);
   arduboy.drawBitmap(2, 8, gameTitleSFL, 124, 24, WHITE);
+    for (byte i = 0; i < 4; i++)
+  {
+    {
+      if (((2 + i) - menuSelection) != 0)
+      {
+        sprites.drawSelfMasked(21 + (22 * i), -4, menuText, i);
+      }
+      if (((2 + i) - menuSelection) == 0) sprites.drawSelfMasked(21 + (22 * i), 0, menuText, i);
+    }
+  }
   if (buttons.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
   if (buttons.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
   if (buttons.justPressed(A_BUTTON | B_BUTTON)) gameState = menuSelection;
