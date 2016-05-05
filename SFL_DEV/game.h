@@ -26,6 +26,7 @@ void stateGamePrepareLevel()
 
 void stateGameNextLevel()
 {
+  
   spaceShip.set();
   currentWave = 0;
   previousWave = 255;
