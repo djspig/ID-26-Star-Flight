@@ -622,7 +622,6 @@ PROGMEM const unsigned char enemyBacks[] = {
 //////////////// HUD ////////////////////////
 /////////////////////////////////////////////
 
-
 const unsigned char PROGMEM lifes_bitmaps[] =
 {
   // #####

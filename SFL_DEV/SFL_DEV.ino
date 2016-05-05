@@ -25,14 +25,15 @@
 #define GAME_ID 26
 
 typedef void (*FunctionPointer) ();
-FunctionPointer mainGameLoop[] =
-{
+FunctionPointer mainGameLoop[] = {
   stateMenuIntro,
   stateMenuMain,
   stateMenuHelp,
   stateMenuPlay,
   stateMenuInfo,
   stateMenuSoundfx,
+  stateGamePrepareLevel,
+  stateGameNextLevel,
   stateGamePlaying,
   stateGamePause,
   stateGameOver,
