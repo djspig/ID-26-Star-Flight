@@ -1,9 +1,20 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "stage.h"
+
 void updateStage()
 {
-
+  updateMap();
+  drawStarField();
+  drawBullets();
+  drawBomb();
+  drawEnemyShips();
+  drawBoss();
+  drawPlayerShip();
+  drawScreenInfo();
+  checkIfShipIsImune();
+  scorePlayer++;
 }
 
 boolean checkGameOver()
@@ -13,6 +24,7 @@ boolean checkGameOver()
 
 void stateGamePlaying()
 {
+  checkInputs();
   updateStage();
   if (checkGameOver())gameState = STATE_GAME_OVER;
 }

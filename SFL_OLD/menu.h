@@ -2,7 +2,8 @@
 #define MENU_H
 
 #include "globals.h"
-
+#include "player.h"
+#include "stage.h"
 
 byte slideCount01 = 0;
 byte slideCount02 = 0;
@@ -85,6 +86,7 @@ void stateMenuInfo()
 {
   arduboy.drawBitmap(2, 8, gameTitleSFL, 124, 24, WHITE);
   arduboy.drawBitmap(16, 32, info_bitmap, 96, 24, WHITE);
+  drawStarField();
   if (buttons.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 
@@ -130,6 +132,15 @@ void stateMenuSoundfx()
 
 void stateMenuPlay()
 {
+  playerShip.reset();
+  currentBullet = 0;
+  life = 3;
+  bombs = 3;
+  scorePlayer = 0;
+  level = LEVEL_ONE;
+  atEndOfLevel = false;
+  levelProgress = 0;
+  currentWeapon = WEAPON_CANON;
   gameState = STATE_GAME_PLAYING;
 }
 

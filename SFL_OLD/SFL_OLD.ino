@@ -14,12 +14,10 @@
 #include "globals.h"
 #include "menu.h"
 #include "game.h"
-#include "inputs.h"
 #include "player.h"
 #include "enemies.h"
-#include "elements.h"
-#include "levels.h"
-
+#include "stage.h"
+#include "boss.h"
 
 //determine the game
 #define GAME_ID 26
