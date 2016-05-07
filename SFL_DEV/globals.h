@@ -20,10 +20,10 @@
 #define STATE_GAME_PAUSE             9
 #define STATE_GAME_OVER              10
 
-#define GAME_TOP                     0
-#define GAME_BOTTOM                  64
+#define GAME_TOP                     -6
+#define GAME_BOTTOM                  55
 #define GAME_LEFT                    0
-#define GAME_RIGHT                   128
+#define GAME_RIGHT                   112
 
 Arduboy arduboy;
 Sprites sprites(arduboy);

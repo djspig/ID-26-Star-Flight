@@ -26,7 +26,6 @@ void stateGamePrepareLevel()
 
 void stateGameNextLevel()
 {
-  
   spaceShip.set();
   currentWave = 0;
   previousWave = 255;
@@ -36,7 +35,10 @@ void stateGameNextLevel()
 
 void stateGamePlaying()
 {
-  if (checkGameOver())gameState = STATE_GAME_OVER;
+  checkInputs();
+  checkIfShipIsImune();
+  drawSpaceShip();
+  //if (checkGameOver())gameState = STATE_GAME_OVER;
 }
 void stateGamePause()
 {

@@ -97,15 +97,16 @@ void stateMenuSoundfx()
   sprites.drawSelfMasked(57, -9 + slideCount01 + (slideCount02 *(1-soundYesNo)), menuText, 5);
   sprites.drawSelfMasked(78, -9 + slideCount01 + (slideCount02 *(soundYesNo)) , menuText, 6);
 
-  if (buttons.justPressed(RIGHT_BUTTON))
-  {
-    soundYesNo = true;
-    slideCount02 = 0;
-  }
+
   if (buttons.justPressed(LEFT_BUTTON))
   {
 
     soundYesNo = false;
+    slideCount02 = 0;
+  }
+    if (buttons.justPressed(RIGHT_BUTTON))
+  {
+    soundYesNo = true;
     slideCount02 = 0;
   }
   if (buttons.justPressed(A_BUTTON | B_BUTTON))
@@ -117,21 +118,17 @@ void stateMenuSoundfx()
   if (soundYesNo == true)
   {
     arduboy.audio.on();
-    //sprites.drawSelfMasked(57, -9 + slideCount01, menuText, 5);
-    //sprites.drawSelfMasked(78, -9 + slideCount01 + slideCount02 , menuText, 6);
   }
   else
   {
     arduboy.audio.off();
-    //sprites.drawSelfMasked(57, -9 + slideCount01 + slideCount02, menuText, 5);
-    //sprites.drawSelfMasked(78, -9 + slideCount01, menuText, 6);
   }
   if (arduboy.everyXFrames(6)) makeItSlide();
 }
 
 void stateMenuPlay()
 {
-  gameState = STATE_GAME_PLAYING;
+  gameState = STATE_GAME_PREPARE_LEVEL;
 }
 
 

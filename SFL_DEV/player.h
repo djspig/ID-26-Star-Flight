@@ -19,7 +19,7 @@ struct Players
     boolean crashing = false;
     byte imuneTimer;
     byte life;
-    byte frame;
+    int frame;
     
 
     void set()
@@ -35,6 +35,27 @@ struct Players
 };
 
 Players spaceShip;
+
+
+void drawSpaceShip()
+{
+  //if (spaceShip.isActive)
+  sprites.drawPlusMask(spaceShip.x, spaceShip.y, spaceShip_plus_mask, spaceShip.frame);
+}
+
+void checkIfShipIsImune()
+{
+  if (spaceShip.isImune)
+  {
+    if (arduboy.everyXFrames(3)) spaceShip.isActive = !spaceShip.isActive;
+    spaceShip.imuneTimer--;
+    if (spaceShip.imuneTimer < 1)
+    {
+      spaceShip.isImune = false;
+      spaceShip.isActive = true;
+    }
+  }
+}
 
 
 
