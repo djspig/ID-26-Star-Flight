@@ -7,7 +7,7 @@
 #include "player.h"
 
 #define TOTAL_AMOUNT_OF_LEVELS  2
-#define TOTAL_AMOUNT_OF_WAVES   4
+#define TOTAL_AMOUNT_OF_WAVES   5
 
 boolean checkStartWave()
 {
@@ -39,7 +39,7 @@ boolean checkEndLevel()
   return false;
 }
 
-void enemySetInLine(byte firstEnemy, byte lastEnemy, byte enemyType, byte x, byte y, int spacingX, int spacingY)
+void enemySetInLine(byte firstEnemy, byte lastEnemy, byte enemyType, byte x, int y, int spacingX, int spacingY)
 {
   for (byte i = firstEnemy; i < lastEnemy; i++)
   {
@@ -94,11 +94,20 @@ void enemyFlyDownUpToMiddle(byte firstEnemy, byte lastEnemy, byte speedEnemy)
   }
 }
 
-void enemyFlyDownUpToSpaceShip(byte firstEnemy, byte lastEnemy, byte speedEnemy)
+void enemyFollowUpSpaceShip(byte firstEnemy, byte lastEnemy, byte speedEnemy)
 {
   for (byte i = firstEnemy; i < lastEnemy; i++)
   {
      if ((enemy[i].y > spaceShip.y) && (enemy[i].x > spaceShip.x + 24)) enemy[i].y--;
+     else enemy[i].x -= speedEnemy;
+  }
+}
+
+void enemyFollowDownSpaceShip(byte firstEnemy, byte lastEnemy, byte speedEnemy)
+{
+  for (byte i = firstEnemy; i < lastEnemy; i++)
+  {
+     if ((enemy[i].y < spaceShip.y) && (enemy[i].x > spaceShip.x + 24)) enemy[i].y++;
      else enemy[i].x -= speedEnemy;
   }
 }
@@ -127,7 +136,14 @@ void wave003()
 void wave004()
 {
   if (checkStartWave())enemySetInLine(0, 3, ENEMY_ZPV_127, 96, 64, 20, 16);
-  enemyFlyDownUpToSpaceShip(0, 3, 3);
+  enemyFollowUpSpaceShip(0, 3, 3);
+  checkEndWave();
+}
+
+void wave005()
+{
+  if (checkStartWave())enemySetInLine(0, 3, ENEMY_ZPV_127, 96, -16, 20, -16);
+  enemyFollowDownSpaceShip(0, 3, 3);
   checkEndWave();
 }
 
@@ -135,6 +151,7 @@ typedef void (*FunctionPointer) ();
 FunctionPointer Levels[TOTAL_AMOUNT_OF_LEVELS][TOTAL_AMOUNT_OF_WAVES] =
 {
   { //LEVEL 01
+    wave005,
     wave004,
     wave003,
     wave002,
@@ -145,6 +162,7 @@ FunctionPointer Levels[TOTAL_AMOUNT_OF_LEVELS][TOTAL_AMOUNT_OF_WAVES] =
     wave002,
     wave003,
     wave004,
+    wave005,
   }
 };
 
