@@ -37,6 +37,5 @@ byte level;
 byte currentWave;
 byte previousWave;
 unsigned long scorePlayer;
-byte levelProgress;
 
 #endif

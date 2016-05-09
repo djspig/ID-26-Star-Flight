@@ -18,9 +18,10 @@ boolean checkGameOver()
 
 void stateGamePrepareLevel()
 {
-  level = 1;
+  level = 0;
   scorePlayer = 0;
   spaceShip.life = 3;
+  setEnemies();
   gameState = STATE_GAME_NEXT_LEVEL;
 };
 
@@ -29,7 +30,7 @@ void stateGameNextLevel()
   spaceShip.set();
   currentWave = 0;
   previousWave = 255;
-  //calculateLevelSize();
+  level++;
   gameState = STATE_GAME_PLAYING;
 };
 
@@ -37,8 +38,12 @@ void stateGamePlaying()
 {
   checkInputs();
   checkIfShipIsImune();
+  checkEnemies();
+  if (arduboy.everyXFrames(2))Levels[level-1][currentWave]();
+  if (checkEndLevel()) gameState = STATE_GAME_NEXT_LEVEL;
+  drawEnemies();
   drawSpaceShip();
-  //if (checkGameOver())gameState = STATE_GAME_OVER;
+  if (checkGameOver())gameState = STATE_GAME_OVER;
 }
 void stateGamePause()
 {

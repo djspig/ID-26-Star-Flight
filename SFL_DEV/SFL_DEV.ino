@@ -48,6 +48,7 @@ void setup()
   gameState = STATE_MENU_INTRO;
   //gameState = STATE_MENU_MAIN;
   menuSelection = STATE_MENU_PLAY;
+  Serial.begin(9600);
 }
 
 void loop() {
