@@ -5,7 +5,7 @@
 
  MADE by TEAM a.r.g. : http://www.team-arg.org/About.html
 
- 2016 - JO3RI - PIQUESEL
+ 2015 - creator name (name of helpers)
 
  Game License: MIT : https://opensource.org/licenses/MIT
 */
@@ -14,26 +14,23 @@
 #include "globals.h"
 #include "menu.h"
 #include "game.h"
-#include "inputs.h"
 #include "player.h"
 #include "enemies.h"
-#include "elements.h"
-#include "levels.h"
-
+#include "stage.h"
+#include "boss.h"
 
 //determine the game
 #define GAME_ID 26
 
 typedef void (*FunctionPointer) ();
-FunctionPointer mainGameLoop[] = {
+FunctionPointer mainGameLoop[] =
+{
   stateMenuIntro,
   stateMenuMain,
   stateMenuHelp,
   stateMenuPlay,
   stateMenuInfo,
   stateMenuSoundfx,
-  stateGamePrepareLevel,
-  stateGameNextLevel,
   stateGamePlaying,
   stateGamePause,
   stateGameOver,
