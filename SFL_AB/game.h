@@ -14,12 +14,12 @@ void stateMenuPlay()
 {
   level = LEVEL_TO_START_WITH - 1;
   scorePlayer = 0;
-  spaceShip.life = 3;
-  spaceShip.bombs = 3;
   resetEnemies();
   resetBullets();
+  spaceShip.reset();
   gameState = STATE_GAME_NEXT_LEVEL;
 }
+
 
 
 void stateGameNextLevel()
@@ -31,6 +31,7 @@ void stateGameNextLevel()
   if (level > TOTAL_AMOUNT_OF_LEVELS) gameState = STATE_MENU_INFO;
   else gameState = STATE_GAME_PLAYING;
 };
+
 
 
 void stateGamePlaying()
@@ -50,7 +51,7 @@ void stateGamePlaying()
 
   drawLifesHUD();
   drawBombsHUD();
-  drawScore(93, 0, SCORE_SMALL_FONT);
+  drawScore(SCORE_SMALL_FONT);
   
 }
 

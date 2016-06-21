@@ -13,7 +13,7 @@ byte currentWave;
 byte previousWave;
 
 byte stillStar[11][2] = {{84, 9}, {67, 14}, {109, 19}, {27, 24}, {9, 29}, {96, 34}, {31, 39}, {45, 44}, {82, 49}, {19, 54}, {57, 59}};
-byte movingStar[11][2] = {{16, 5}, {125, 10}, {62, 15}, {79, 20}, {115, 25}, {104, 30}, {16, 35}, {117, 40}, {65, 45}, {98, 50}, {23, 55}};
+byte movingStar[11][2] = {{16, 10}, {125, 15}, {62, 20}, {79, 25}, {115, 30}, {104, 35}, {16, 40}, {117, 45}, {65, 50}, {98, 55}, {23, 60}};
 byte fastMovingStar[11][2] = {{84, 7}, {67, 12}, {109, 17}, {27, 22}, {9, 27}, {96, 32}, {31, 37}, {45, 42}, {82, 47}, {19, 52}, {57, 57}};
 
 void drawStarField()
@@ -202,22 +202,23 @@ const FunctionPointer PROGMEM Levels[TOTAL_AMOUNT_OF_LEVELS][TOTAL_AMOUNT_OF_WAV
 
 void drawLifesHUD()
 {
-  for (byte i = 0; i < spaceShip.life; i++) sprites.drawPlusMask(i * 6, 0, hudDisplay_plus_mask, 10);
+  if (arduboy.everyXFrames(20) && (spaceShip.life - 1 < 1)) spaceShip.hud = !spaceShip.hud;
+  if (spaceShip.hud) for (byte i = 0; i < spaceShip.life; i++) sprites.drawPlusMask(i * 5, 0, hudDisplay_plus_mask, 10);
 }
 
 void drawBombsHUD()
 {
-  for (byte i = 0; i < spaceShip.bombs; i++) sprites.drawPlusMask(40+(i*8), 0, hudDisplay_plus_mask, 11);
+  for (byte i = 0; i < spaceShip.bombs; i++) sprites.drawPlusMask(107+(i*8), 0, hudDisplay_plus_mask, 11);
 }
 
 
-void drawScore(byte scoreX, byte scoreY, byte fontType)
+void drawScore(byte fontType)
 {
   char buf[10];
   //scorePlayer = arduboy.cpuLoad();
   ltoa(scorePlayer, buf, 10);
   char charLen = strlen(buf);
-  char pad = 7 - charLen;
+  char pad = 9 - charLen;
 
   //draw 0 padding
   for (byte i = 0; i < pad; i++)
@@ -225,7 +226,7 @@ void drawScore(byte scoreX, byte scoreY, byte fontType)
     switch (fontType)
     {
       case SCORE_SMALL_FONT:
-        sprites.drawPlusMask(scoreX + (5 * i), scoreY, hudDisplay_plus_mask, 0);
+        sprites.drawPlusMask(41 + (5 * i), 0, hudDisplay_plus_mask, 0);
         break;
       case SCORE_BIG_FONT:
         //sprites.drawSelfMasked(scoreX + (7 * i), scoreY, numbersBig, 0);
@@ -253,7 +254,7 @@ void drawScore(byte scoreX, byte scoreY, byte fontType)
     switch (fontType)
     {
       case SCORE_SMALL_FONT:
-        sprites.drawPlusMask(scoreX + (pad * 5) + (5 * i), scoreY, hudDisplay_plus_mask, digit);
+        sprites.drawPlusMask(41 + (pad * 5) + (5 * i), 0, hudDisplay_plus_mask, digit);
         break;
       case SCORE_BIG_FONT:
         //sprites.drawSelfMasked(scoreX + (pad * 7) + (7 * i), scoreY, numbersBig, digit);

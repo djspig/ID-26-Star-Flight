@@ -51,6 +51,7 @@ struct Players
     boolean isActive;
     boolean isImune;
     boolean crashing;
+    boolean hud;
     byte imuneTimer;
     byte life;
     int frame;
@@ -67,8 +68,16 @@ struct Players
       isActive = true;
       imuneTimer = 60;
       crashing = false;
-      weaponType = WEAPON_CANON;
+      hud = true;
       currentBullet = 0;
+    }
+
+    void reset()
+    {
+      weaponType = WEAPON_CANON;
+      life = 3;
+      bombs = 3;
+      hud = true;
     }
 };
 
