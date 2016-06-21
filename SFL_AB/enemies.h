@@ -50,7 +50,7 @@ Enemies enemy[MAX_ONSCREEN_ENEMIES];
 EndBoss endboss;
 
 
-void setEnemies()
+void resetEnemies()
 {
   for (byte i = 0; i < MAX_ONSCREEN_ENEMIES; i++)
   {
@@ -58,7 +58,7 @@ void setEnemies()
   }
 }
 
-void checkEnemies()
+void updateEnemies()
 {
   if (arduboy.everyXFrames(6))
   {

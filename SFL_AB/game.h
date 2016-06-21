@@ -16,7 +16,8 @@ void stateMenuPlay()
   scorePlayer = 0;
   spaceShip.life = 3;
   spaceShip.bombs = 3;
-  setEnemies();
+  resetEnemies();
+  resetBullets();
   gameState = STATE_GAME_NEXT_LEVEL;
 }
 
@@ -34,12 +35,17 @@ void stateGameNextLevel()
 
 void stateGamePlaying()
 {
+  
   checkInputs();
   checkIfShipIsImune();
-  checkEnemies();
+  updateEnemies();
+  updateBullets();
   if (arduboy.everyXFrames(2))((FunctionPointer) pgm_read_word (&Levels[level - 1][currentWave]))();
   if (checkEndLevel()) gameState = STATE_GAME_NEXT_LEVEL;
+  
+  drawStarField();
   drawEnemies();
+  drawBullets();
   drawSpaceShip();
 
   drawLifesHUD();

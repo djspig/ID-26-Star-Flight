@@ -6,7 +6,7 @@
 #define WEAPON_WAVE              2
 
 #define MAX_WEAPON_TYPES         3
-#define MAX_AMOUNT_BULLETS       6
+#define MAX_AMOUNT_BULLETS       8
 
 #define DAMAGE_BULLET            1
 #define DAMAGE_ROCKETS           2
@@ -20,15 +20,19 @@
 #define SPEEDY_ROCKETS           1
 #define SPEEDY_WAVE              2
 
+#define MAX_FRAME_BULLET         0
+#define MAX_FRAME_ROCKETS        3
+#define MAX_FRAME_WAVE           7
+
+
 #include <Arduino.h>
 #include "globals.h"
 
-byte currentBullet;
-
-const unsigned char PROGMEM bulletDamage[] = {
+const unsigned char PROGMEM bulletCharacteristics[] = {
   DAMAGE_BULLET, DAMAGE_ROCKETS, DAMAGE_WAVE,
   FUSE_BULLET, FUSE_ROCKETS, FUSE_WAVE,
   SPEEDY_BULLET, SPEEDY_ROCKETS, SPEEDY_WAVE,
+  MAX_FRAME_BULLET, MAX_FRAME_ROCKETS, MAX_FRAME_WAVE
 };
 
 struct Players
@@ -44,7 +48,7 @@ struct Players
     byte life;
     int frame;
     byte bombs;
-    byte currentBullet;
+    byte currentWeapon;
 
 
     void set()
@@ -56,7 +60,7 @@ struct Players
       isActive = true;
       imuneTimer = 60;
       crashing = false;
-      currentBullet = 0;
+      currentWeapon = 0;
     }
 };
 
@@ -66,36 +70,52 @@ struct PlayerShot
     byte x;
     byte y;
     byte damage;
-    boolean isVisible = false;
+    boolean isVisible;
     byte type;
     byte frame;
-    int speedY;
+    byte maxFrame;
+    int speedX;
     byte fuse;
 
     void set(byte weaponType)
     {
       type = weaponType;
-      damage = pgm_read_word (&bulletDamage[weaponType]);
-      fuse = pgm_read_word (&bulletDamage[weaponType + MAX_WEAPON_TYPES]);
-      speedY = pgm_read_word (&bulletDamage[weaponType + (2 * MAX_WEAPON_TYPES)]);
+      damage = pgm_read_word (&bulletCharacteristics[weaponType]);
+      fuse = pgm_read_word (&bulletCharacteristics[weaponType + MAX_WEAPON_TYPES]);
+      speedX = pgm_read_word (&bulletCharacteristics[weaponType + (2 * MAX_WEAPON_TYPES)]);
+      maxFrame = pgm_read_word (&bulletCharacteristics[weaponType + (3 * MAX_WEAPON_TYPES)]);
+      frame = 0;
+    }
+
+    void update()
+    {
+      fuse--;
+      if ((fuse == 0) || (x > 126) || (damage < 1))
+      {
+        isVisible = false;
+      }
+      x += speedX;
     }
 };
 
 Players spaceShip;
 PlayerShot bullets[MAX_AMOUNT_BULLETS];
 
-void schoot()
+
+void resetBullets()
 {
-  bullets[spaceShip.currentBullet].set(
+  for (byte i = 0; i < MAX_AMOUNT_BULLETS; i++) bullets[i].isVisible = false;
 }
 
-
-
-
-
-void drawSpaceShip()
+void shoot()
 {
-  if (spaceShip.isActive) sprites.drawPlusMask(spaceShip.x, spaceShip.y, spaceShip_plus_mask, spaceShip.frame);
+
+  bullets[spaceShip.currentWeapon].set(spaceShip.weaponType);
+  bullets[spaceShip.currentWeapon].isVisible = true;
+  bullets[spaceShip.currentWeapon].x = spaceShip.x + 12;
+  bullets[spaceShip.currentWeapon].y = spaceShip.y + 4;
+  spaceShip.currentWeapon++;
+  if (spaceShip.currentWeapon > MAX_AMOUNT_BULLETS - 1) spaceShip.currentWeapon = 0;
 }
 
 void checkIfShipIsImune()
@@ -108,6 +128,34 @@ void checkIfShipIsImune()
     {
       spaceShip.isImune = false;
       spaceShip.isActive = true;
+    }
+  }
+}
+
+void updateBullets()
+{
+  for (byte i = 0; i < MAX_AMOUNT_BULLETS; i++)
+  {
+    if (bullets[i].isVisible)
+    {
+      bullets[i].update();
+    }
+  }
+}
+
+void drawSpaceShip()
+{
+  if (spaceShip.isActive) sprites.drawPlusMask(spaceShip.x, spaceShip.y, spaceShip_plus_mask, spaceShip.frame);
+}
+
+
+void drawBullets()
+{
+  for (byte i = 0; i < MAX_AMOUNT_BULLETS; i++)
+  {
+    if (bullets[i].isVisible)
+    {
+      sprites.drawPlusMask(bullets[i].x, bullets[i].y, bullets_plus_mask, bullets[i].frame);
     }
   }
 }

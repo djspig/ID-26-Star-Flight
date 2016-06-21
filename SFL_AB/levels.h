@@ -12,6 +12,36 @@
 byte currentWave;
 byte previousWave;
 
+byte stillStar[11][2] = {{84, 9}, {67, 14}, {109, 19}, {27, 24}, {9, 29}, {96, 34}, {31, 39}, {45, 44}, {82, 49}, {19, 54}, {57, 59}};
+byte movingStar[11][2] = {{16, 5}, {125, 10}, {62, 15}, {79, 20}, {115, 25}, {104, 30}, {16, 35}, {117, 40}, {65, 45}, {98, 50}, {23, 55}};
+byte fastMovingStar[11][2] = {{84, 7}, {67, 12}, {109, 17}, {27, 22}, {9, 27}, {96, 32}, {31, 37}, {45, 42}, {82, 47}, {19, 52}, {57, 57}};
+
+void drawStarField()
+{
+  for (byte i = 0; i < 11; i++)
+  {
+    if (arduboy.everyXFrames(1))
+    {
+      fastMovingStar[i][0]--;
+      if (fastMovingStar[i][0] < 1) fastMovingStar[i][0] = 127;
+      arduboy.drawPixel(fastMovingStar[i][0], fastMovingStar[i][1], WHITE);
+    }
+    if (arduboy.everyXFrames(2))
+    {
+      movingStar[i][0]--;
+      if (movingStar[i][0] < 1) movingStar[i][0] = 127;
+      arduboy.drawPixel(movingStar[i][0], movingStar[i][1], WHITE);
+    }
+    if (arduboy.everyXFrames(3))
+    {
+      stillStar[i][0]--;
+      if (stillStar[i][0] < 1) stillStar[i][0] = 127;
+      arduboy.drawPixel(stillStar[i][0], stillStar[i][1], WHITE);
+    }
+
+  }
+}
+
 boolean checkStartWave()
 {
   if (currentWave != previousWave)

@@ -5,6 +5,8 @@
 #include "globals.h"
 #include "player.h"
 
+byte testWeapon = 0;
+
 void checkInputs()
 {
 
@@ -30,7 +32,7 @@ void checkInputs()
   }
   if (arduboy.justPressed(B_BUTTON) && !spaceShip.crashing)
   {
-    //shoot();
+    shoot();
     //if (arduboy.everyXFrames(1) && (bombCharge > 1))bombCharge--;
   }
   /*
@@ -51,15 +53,15 @@ void checkInputs()
       bombs--;
       if (bombs < 0) bombs = 0;
     }
-  
+  */
   if (arduboy.justPressed(A_BUTTON) && !spaceShip.crashing)
   {
     testWeapon++;
     if (testWeapon > 2) testWeapon = 0;
-    currentWeapon = testWeapon;
+    spaceShip.currentWeapon = testWeapon;
     //gameState = STATE_GAME_PAUSE;
   }
-  */
+
   if (arduboy.notPressed(UP_BUTTON) && arduboy.notPressed(DOWN_BUTTON) && !spaceShip.crashing)
   {
     if (arduboy.everyXFrames(12))
