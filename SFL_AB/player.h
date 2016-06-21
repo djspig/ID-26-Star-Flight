@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define WEAPON_BULLET            0
+#define WEAPON_CANON             0
 #define WEAPON_ROCKETS           1
-#define WEAPON_WAVE              2
+#define WEAPON_LASER             2
 
 #define MAX_WEAPON_TYPES         3
 #define MAX_AMOUNT_BULLETS       8
@@ -20,9 +20,15 @@
 #define SPEEDY_ROCKETS           1
 #define SPEEDY_WAVE              2
 
+#define START_FRAME_BULLET       0
+#define START_FRAME_ROCKETS      1
+#define START_FRAME_WAVE         5
+
 #define MAX_FRAME_BULLET         0
 #define MAX_FRAME_ROCKETS        3
 #define MAX_FRAME_WAVE           7
+
+
 
 
 #include <Arduino.h>
@@ -32,6 +38,7 @@ const unsigned char PROGMEM bulletCharacteristics[] = {
   DAMAGE_BULLET, DAMAGE_ROCKETS, DAMAGE_WAVE,
   FUSE_BULLET, FUSE_ROCKETS, FUSE_WAVE,
   SPEEDY_BULLET, SPEEDY_ROCKETS, SPEEDY_WAVE,
+  START_FRAME_BULLET, START_FRAME_ROCKETS, START_FRAME_WAVE,
   MAX_FRAME_BULLET, MAX_FRAME_ROCKETS, MAX_FRAME_WAVE
 };
 
@@ -40,15 +47,15 @@ struct Players
   public:
     int x;
     int y;
-    byte weaponType = WEAPON_BULLET;
-    boolean isActive = true;
-    boolean isImune = false;
-    boolean crashing = false;
+    byte weaponType;
+    boolean isActive;
+    boolean isImune;
+    boolean crashing;
     byte imuneTimer;
     byte life;
     int frame;
     byte bombs;
-    byte currentWeapon;
+    byte currentBullet;
 
 
     void set()
@@ -60,7 +67,8 @@ struct Players
       isActive = true;
       imuneTimer = 60;
       crashing = false;
-      currentWeapon = 0;
+      weaponType = WEAPON_CANON;
+      currentBullet = 0;
     }
 };
 
@@ -77,18 +85,28 @@ struct PlayerShot
     int speedX;
     byte fuse;
 
-    void set(byte weaponType)
+    void set(byte weaponChoice)
     {
-      type = weaponType;
-      damage = pgm_read_word (&bulletCharacteristics[weaponType]);
-      fuse = pgm_read_word (&bulletCharacteristics[weaponType + MAX_WEAPON_TYPES]);
-      speedX = pgm_read_word (&bulletCharacteristics[weaponType + (2 * MAX_WEAPON_TYPES)]);
-      maxFrame = pgm_read_word (&bulletCharacteristics[weaponType + (3 * MAX_WEAPON_TYPES)]);
+      type = weaponChoice;
+      damage = pgm_read_word (&bulletCharacteristics[weaponChoice]);
+      fuse = pgm_read_word (&bulletCharacteristics[weaponChoice + MAX_WEAPON_TYPES]);
+      speedX = pgm_read_word (&bulletCharacteristics[weaponChoice + (2 * MAX_WEAPON_TYPES)]);
+      maxFrame = pgm_read_word (&bulletCharacteristics[weaponChoice + (4 * MAX_WEAPON_TYPES)]);
       frame = 0;
     }
 
     void update()
     {
+      if ((type == WEAPON_ROCKETS) && arduboy.everyXFrames(2))
+      {
+        frame++;
+        if (fuse == 40) speedX += 2;
+        if (fuse == 35) speedX += 2;
+        if (fuse == 30) speedX += 1;
+      }
+      if ((type == WEAPON_LASER)) frame++;
+      //else frame++;
+      if (frame > maxFrame) frame = 0;
       fuse--;
       if ((fuse == 0) || (x > 126) || (damage < 1))
       {
@@ -110,12 +128,12 @@ void resetBullets()
 void shoot()
 {
 
-  bullets[spaceShip.currentWeapon].set(spaceShip.weaponType);
-  bullets[spaceShip.currentWeapon].isVisible = true;
-  bullets[spaceShip.currentWeapon].x = spaceShip.x + 12;
-  bullets[spaceShip.currentWeapon].y = spaceShip.y + 4;
-  spaceShip.currentWeapon++;
-  if (spaceShip.currentWeapon > MAX_AMOUNT_BULLETS - 1) spaceShip.currentWeapon = 0;
+  bullets[spaceShip.currentBullet].set(spaceShip.weaponType);
+  bullets[spaceShip.currentBullet].isVisible = true;
+  bullets[spaceShip.currentBullet].x = spaceShip.x;
+  bullets[spaceShip.currentBullet].y = spaceShip.y + 4;
+  spaceShip.currentBullet++;
+  if (spaceShip.currentBullet > MAX_AMOUNT_BULLETS - 1) spaceShip.currentBullet = 0;
 }
 
 void checkIfShipIsImune()
@@ -155,7 +173,7 @@ void drawBullets()
   {
     if (bullets[i].isVisible)
     {
-      sprites.drawPlusMask(bullets[i].x, bullets[i].y, bullets_plus_mask, bullets[i].frame);
+      sprites.drawPlusMask(bullets[i].x, bullets[i].y, bullets_plus_mask, bullets[i].frame + pgm_read_word (&bulletCharacteristics[spaceShip.weaponType + (3 * MAX_WEAPON_TYPES)]));
     }
   }
 }

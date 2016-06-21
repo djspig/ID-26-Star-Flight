@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "globals.h"
+#include "levels.h"
 
 
 byte slideCount01 = 0;
@@ -87,6 +88,7 @@ void stateMenuHelp()
 
 void stateMenuInfo()
 {
+  drawStarField();
   sprites.drawSelfMasked(2, 8, gameTitleSFL, 0);
   sprites.drawSelfMasked(16, 32, info_bitmap, 0);
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;

@@ -5,7 +5,6 @@
 #include "globals.h"
 #include "player.h"
 
-byte testWeapon = 0;
 
 void checkInputs()
 {
@@ -56,9 +55,8 @@ void checkInputs()
   */
   if (arduboy.justPressed(A_BUTTON) && !spaceShip.crashing)
   {
-    testWeapon++;
-    if (testWeapon > 2) testWeapon = 0;
-    spaceShip.currentWeapon = testWeapon;
+    spaceShip.weaponType++;
+    if (spaceShip.weaponType > 2) spaceShip.weaponType = 0;
     //gameState = STATE_GAME_PAUSE;
   }
 
